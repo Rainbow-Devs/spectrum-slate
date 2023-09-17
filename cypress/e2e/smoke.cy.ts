@@ -5,7 +5,15 @@ describe("smoke tests", () => {
     cy.cleanupUser();
   });
 
+  const base64Data = "data:image/png;base64,iVBORw0KG..."; // truncated for brevity
+
   it("should allow you to register and login", () => {
+    cy.intercept("GET", "https://source.unsplash.com/random?wallpapers", {
+      body: base64Data,
+      headers: {
+        "Content-Type": "image/jpeg",
+      },
+    });
     const loginForm = {
       email: `${faker.internet.userName()}@example.com`,
       password: faker.internet.password(),
@@ -21,7 +29,7 @@ describe("smoke tests", () => {
 
     cy.findByRole("link", { name: /notes/i }).click();
     cy.findByRole("button", { name: /logout/i }).click();
-    cy.findByRole("link", { name: /log in/i });
+    cy.findByRole("button", { name: /sign in/i });
   });
 
   it("should allow you to make a note", () => {

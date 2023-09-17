@@ -18,6 +18,18 @@ model User {
   notes    Note[]
 }
 
+// model Profile {
+//   id    String @id @default(cuid())
+//   name  String
+//   image String
+
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+
+//   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+//   userId String @unique
+// }
+
 model Password {
   hash String
 

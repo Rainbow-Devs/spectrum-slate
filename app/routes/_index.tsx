@@ -77,6 +77,7 @@ export default function Index() {
     if (user) {
       navigate("/notes");
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
   return (
     <ThemeProvider theme={defaultTheme}>

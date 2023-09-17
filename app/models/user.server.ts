@@ -60,3 +60,21 @@ export async function verifyLogin(
 
   return userWithoutPassword;
 }
+
+// export async function resetPassword(
+//   email: User["email"],
+//   password: string,
+// ) {
+//   const hashedPassword = await bcrypt.hash(password, 10);
+
+//   return prisma.user.update({
+//     where: { email },
+//     data: {
+//       password: {
+//         update: {
+//           hash: hashedPassword,
+//         },
+//       },
+//     },
+//   });
+// }

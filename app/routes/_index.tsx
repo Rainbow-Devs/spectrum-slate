@@ -170,7 +170,7 @@ export default function Index() {
               </Form>
               <Grid container>
                 <Grid item xs>
-                  <Link to="/forgot">Forgot password?</Link>
+                  {/* <Link to="/forgot">Forgot password?</Link> */}
                 </Grid>
                 <Grid item>
                   <Link to="/signup">{"Don't have an account? Sign Up"}</Link>

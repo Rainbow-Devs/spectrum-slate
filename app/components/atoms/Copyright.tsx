@@ -1,15 +1,15 @@
-import { Link, Typography } from "@mui/material";
 
 function Copyright(props: any) {
   return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Spectrum Slate
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
+    <div className="text-center text-xs text-gray-700" {...props}>
+    {'Copyright © '}
+    <a className="text-inherit" href="https://mui.com/">
+      Spectrum Slate
+    </a>{' '}
+    {new Date().getFullYear()}
+    {'.'}
+  </div>
+  
   );
 }
 

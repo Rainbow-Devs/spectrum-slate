@@ -1,17 +1,5 @@
 import { json, type ActionArgs, type V2_MetaFunction } from "@remix-run/node";
 import * as React from "react";
-import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
-import CssBaseline from "@mui/material/CssBaseline";
-import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
-import Paper from "@mui/material/Paper";
-import Box from "@mui/material/Box";
-import Grid from "@mui/material/Grid";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import Typography from "@mui/material/Typography";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Form, Link, useActionData, useNavigate } from "@remix-run/react";
 import Copyright from "~/components/atoms/Copyright";
 
@@ -19,6 +7,10 @@ import { useOptionalUser, validateEmail } from "~/utils";
 import { verifyLogin } from "~/models/user.server";
 import { createUserSession } from "~/session.server";
 import { useEffect } from "react";
+import { Button } from "~/components/atoms/button";
+import { Label } from "~/components/atoms/label";
+import { Input } from "~/components/atoms/input";
+import { Checkbox } from "~/components/atoms/checkbox";
 
 export const meta: V2_MetaFunction = () => [{ title: "Remix Notes" }];
 
@@ -68,7 +60,6 @@ export const action = async ({ request }: ActionArgs) => {
 };
 
 export default function Index() {
-  const defaultTheme = createTheme();
   const user = useOptionalUser();
   const actionData = useActionData<typeof action>();
   const navigate = useNavigate();
@@ -77,111 +68,62 @@ export default function Index() {
     if (user) {
       navigate("/notes");
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
   return (
-    <ThemeProvider theme={defaultTheme}>
-      <div>
-        <Grid container component="main" sx={{ height: "100vh" }}>
-          <CssBaseline />
-          <Grid
-            item
-            xs={false}
-            sm={4}
-            md={7}
-            sx={{
-              backgroundImage:
-                "url(https://source.unsplash.com/random?wallpapers)",
-              backgroundRepeat: "no-repeat",
-              backgroundColor: (t) =>
-                t.palette.mode === "light"
-                  ? t.palette.grey[50]
-                  : t.palette.grey[900],
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-            }}
+    <div className="sm:flex sm:flex-col md:flex-row">
+      <div className="bg-[url('https://source.unsplash.com/random?wallpapers')] bg-no-repeat bg-cover h-80 w-full md:w-1/2 md:h-screen"></div>
+      <div className="flex flex-col items-center md:justify-center md:items-center sm:h-1/2 md:h-screen sm:w-2/4">
+        <h1 className="text-2xl font-bold mb-5 mt-5 md:mt-0">Sign in</h1>
+        <Form
+          method="post"
+          className="flex flex-col justify-center items-center w-3/4 md:w-1/2"
+        >
+          <Input
+            required
+            id="email"
+            name="email"
+            autoComplete="email"
+            autoFocus
+            placeholder="email"
+            className="mb-5"
           />
-          <Grid
-            item
-            xs={12}
-            sm={8}
-            md={5}
-            component={Paper}
-            elevation={6}
-            square
-          >
-            <Box
-              sx={{
-                my: 8,
-                mx: 4,
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-              }}
+          {actionData?.errors?.email && (
+            <p className="text-red-500 text-sm">{actionData.errors.email}</p>
+          )}
+          <Input
+            type="password"
+            name="password"
+            placeholder="password"
+            className="mb-5"
+          />
+
+          {actionData?.errors?.password && (
+            <p className="text-red-500 text-sm">{actionData.errors.password}</p>
+          )}
+          <div className="flex flex-row justify-center">
+            <Label
+              htmlFor="remember"
+              className="flex items-center justify-between mr-5"
             >
-              <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-                <LockOutlinedIcon />
-              </Avatar>
-              <Typography component="h1" variant="h5">
-                Sign in
-              </Typography>
-              <Form method="post">
-                <TextField
-                  margin="normal"
-                  required
-                  fullWidth
-                  id="email"
-                  label="Email Address"
-                  name="email"
-                  autoComplete="email"
-                  autoFocus
-                />
-                {actionData?.errors?.email && (
-                  <p className="text-red-500 text-sm">
-                    {actionData.errors.email}
-                  </p>
-                )}
-                <TextField
-                  margin="normal"
-                  required
-                  fullWidth
-                  name="password"
-                  label="Password"
-                  type="password"
-                  id="password"
-                  autoComplete="current-password"
-                />
-                {actionData?.errors?.password && (
-                  <p className="text-red-500 text-sm">
-                    {actionData.errors.password}
-                  </p>
-                )}
-                <FormControlLabel
-                  control={<Checkbox name="remember" value="remember" />}
-                  label="Remember me"
-                />
-                <Button
-                  type="submit"
-                  fullWidth
-                  variant="contained"
-                  sx={{ mt: 3, mb: 2 }}
-                >
-                  Sign In
-                </Button>
-              </Form>
-              <Grid container>
-                <Grid item xs>
-                  {/* <Link to="/forgot">Forgot password?</Link> */}
-                </Grid>
-                <Grid item>
-                  <Link to="/signup">{"Don't have an account? Sign Up"}</Link>
-                </Grid>
-              </Grid>
-              <Copyright sx={{ mt: 5 }} />
-            </Box>
-          </Grid>
-        </Grid>
+              Remember Me
+            </Label>
+            <Checkbox id="remember" name="remember" />
+          </div>
+          <Button
+            className="mb-5 mt-5 bg-slate-600 text-white"
+            variant="outline"
+          >
+            Sign In
+          </Button>
+        </Form>
+        <div>
+          <div>
+            <Link to="/signup">{"Don't have an account? Sign Up"}</Link>
+          </div>
+        </div>
+        <Copyright sx={{ mt: 5 }} />
       </div>
-    </ThemeProvider>
+    </div>
   );
 }

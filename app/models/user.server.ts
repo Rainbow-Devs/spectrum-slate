@@ -9,6 +9,17 @@ export async function getUserById(id: User["id"]) {
   return prisma.user.findUnique({ where: { id } });
 }
 
+// update User fullName, location, email, themePreference wakeUpTime bedtime and phoneNumber dont return password
+export async function updateUserById(
+  id: User["id"],
+  data: Partial<Omit<User, "id" | "password">>,
+) {
+  await prisma.user.update({
+    where: { id },
+    data,
+  });
+  return prisma.user.findUnique({ where: { id } });
+}
 export async function getUserByEmail(email: User["email"]) {
   return prisma.user.findUnique({ where: { email } });
 }

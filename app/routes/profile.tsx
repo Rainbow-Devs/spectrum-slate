@@ -1,11 +1,11 @@
 // profile form component where users can edit their information
 
 import React, { useEffect, useState } from "react";
-import { Form, useActionData } from "@remix-run/react";
+import { Form, isRouteErrorResponse, useActionData, useNavigate, useRouteError } from "@remix-run/react";
 import { Input } from "~/components/atoms/input";
 import { Label } from "~/components/atoms/label";
 import { Button } from "~/components/atoms/button";
-import { useOptionalUser } from "~/utils";
+import { useUser } from "~/utils";
 import { updateUserById } from "~/models/user.server";
 import { requireUserId } from "~/session.server";
 import { NavBar } from "~/components/templates/nav-bar";
@@ -42,15 +42,19 @@ export const action = async ({ request }) => {
 };
 
 export default function ProfileForm() {
-  const user = useOptionalUser();
+  const user = useUser();
   const [email, setEmail] = useState(user?.email ?? "");
   const [fullName, setFullName] = useState(user?.fullName ?? "");
   const [wakeUpTime, setWakeUpTime] = useState(user?.wakeUpTime ?? "");
   const [bedTime, setBedTime] = useState(user?.bedTime ?? "");
   const [isDisabled, setIsDisabled] = useState(true);
   const actionData = useActionData();
+  const nav = useNavigate();
 
   useEffect(() => {
+    if(!user){
+      nav("/login")
+    }
     if (actionData?.error) {
       toast({
         title: "Error",
@@ -141,4 +145,30 @@ export default function ProfileForm() {
       <Toaster />
     </>
   );
+}
+
+
+export function ErrorBoundary() {
+  const error = useRouteError();
+
+  if (isRouteErrorResponse(error)) {
+    console.log(error);
+    return (
+      <div>
+        <h1>
+          {error.status} {error.statusText}
+        </h1>
+        <p>{error.data}</p>
+      </div>
+    );
+  } else if (error instanceof Error) {
+    console.log(error);
+    return (
+      <div>
+        <h1>Error</h1>
+      </div>
+    );
+  } else {
+    return <h1>Unknown Error</h1>;
+  }
 }

@@ -1,15 +1,16 @@
 // profile form component where users can edit their information
 
-import React, { useState } from "react";
-import { Form } from "@remix-run/react";
+import React, { useEffect, useState } from "react";
+import { Form, useActionData, useNavigation } from "@remix-run/react";
 import { Input } from "~/components/atoms/input";
 import { Label } from "~/components/atoms/label";
 import { Button } from "~/components/atoms/button";
 import { useOptionalUser } from "~/utils";
-import { redirect } from "@remix-run/node";
 import { updateUserById } from "~/models/user.server";
 import { requireUserId } from "~/session.server";
 import { NavBar } from "~/components/templates/nav-bar";
+import { Toaster } from "~/components/ui/toaster";
+import { toast } from "~/components/ui/use-toast";
 
 export const action = async ({ request }) => {
   const id = await requireUserId(request);
@@ -18,22 +19,46 @@ export const action = async ({ request }) => {
   const fullName = formData.get("fullName");
   const wakeUpTime = formData.get("wakeUpTime");
   const bedTime = formData.get("bedTime");
-  // update user information
   await updateUserById(id, {
     email,
     fullName,
     wakeUpTime,
     bedTime,
   });
-  return redirect("/profile");
+  return "success";
 };
 
 export default function ProfileForm() {
   const user = useOptionalUser();
+  const navigation = useNavigation();
   const [email, setEmail] = useState(user?.email ?? "");
   const [fullName, setFullName] = useState(user?.fullName ?? "");
   const [wakeUpTime, setWakeUpTime] = useState(user?.wakeUpTime ?? "");
   const [bedTime, setBedTime] = useState(user?.bedTime ?? "");
+  const [isDisabled, setIsDisabled] = useState(true);
+
+  useEffect(() => {
+    if (navigation.formAction === "/profile") {
+      toast({
+        title: "Profile Updated",
+        description: "Your profile has been updated successfully",
+      });
+    }
+  }, [navigation.formAction]);
+
+    useEffect(() => {
+      if (
+        email === user?.email &&
+        fullName === user?.fullName &&
+        wakeUpTime === user?.wakeUpTime &&
+        bedTime === user?.bedTime
+      ) {
+        setIsDisabled(true);
+      } else {
+        setIsDisabled(false);
+      }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [email, fullName, wakeUpTime, bedTime, user]);
 
   return (
     <>
@@ -88,11 +113,13 @@ export default function ProfileForm() {
             variant="outline"
             className="mt-5 bg-slate-700 text-white"
             type="submit"
+            disabled={isDisabled}
           >
             Update
           </Button>
         </div>
       </Form>
+      <Toaster />
     </>
   );
 }

@@ -1,7 +1,7 @@
 // profile form component where users can edit their information
 
 import React, { useEffect, useState } from "react";
-import { Form, useActionData, useNavigation } from "@remix-run/react";
+import { Form, useActionData } from "@remix-run/react";
 import { Input } from "~/components/atoms/input";
 import { Label } from "~/components/atoms/label";
 import { Button } from "~/components/atoms/button";
@@ -19,46 +19,65 @@ export const action = async ({ request }) => {
   const fullName = formData.get("fullName");
   const wakeUpTime = formData.get("wakeUpTime");
   const bedTime = formData.get("bedTime");
-  await updateUserById(id, {
-    email,
-    fullName,
-    wakeUpTime,
-    bedTime,
-  });
-  return "success";
+
+  if (wakeUpTime > bedTime) {
+    return { error: "Wake up time must be before bed time" };
+  }
+
+  if (wakeUpTime === bedTime) {
+    return { error: "Wake up time cannot be the same as bed time" };
+  }
+
+  try {
+    await updateUserById(id, {
+      email,
+      fullName,
+      wakeUpTime,
+      bedTime,
+    });
+    return { message: "Profile updated successfully" };
+  } catch {
+    return { error: "Something went wrong" };
+  }
 };
 
 export default function ProfileForm() {
   const user = useOptionalUser();
-  const navigation = useNavigation();
   const [email, setEmail] = useState(user?.email ?? "");
   const [fullName, setFullName] = useState(user?.fullName ?? "");
   const [wakeUpTime, setWakeUpTime] = useState(user?.wakeUpTime ?? "");
   const [bedTime, setBedTime] = useState(user?.bedTime ?? "");
   const [isDisabled, setIsDisabled] = useState(true);
+  const actionData = useActionData();
 
   useEffect(() => {
-    if (navigation.formAction === "/profile") {
+    if (actionData?.error) {
       toast({
-        title: "Profile Updated",
-        description: "Your profile has been updated successfully",
+        title: "Error",
+        description: actionData.error,
       });
     }
-  }, [navigation.formAction]);
+    if (actionData?.message) {
+      toast({
+        title: "Success",
+        description: actionData.message,
+      });
+    }
+  }, [actionData]);
 
-    useEffect(() => {
-      if (
-        email === user?.email &&
-        fullName === user?.fullName &&
-        wakeUpTime === user?.wakeUpTime &&
-        bedTime === user?.bedTime
-      ) {
-        setIsDisabled(true);
-      } else {
-        setIsDisabled(false);
-      }
+  useEffect(() => {
+    if (
+      email === user?.email &&
+      fullName === user?.fullName &&
+      wakeUpTime === user?.wakeUpTime &&
+      bedTime === user?.bedTime
+    ) {
+      setIsDisabled(true);
+    } else {
+      setIsDisabled(false);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [email, fullName, wakeUpTime, bedTime, user]);
+  }, [email, fullName, wakeUpTime, bedTime, user]);
 
   return (
     <>

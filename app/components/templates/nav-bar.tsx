@@ -1,7 +1,6 @@
 import {
   NavigationMenu,
   NavigationMenuList,
-  NavigationMenuLink,
 } from "~/components/organisms/navigation-menu";
 import { Form, Link } from "@remix-run/react";
 
@@ -11,10 +10,10 @@ export const NavBar = () => {
       <NavigationMenu>
         <NavigationMenuList>
           <Link to="/notes" className="mr-5">
-            <NavigationMenuLink>Notes</NavigationMenuLink>
+            Notes
           </Link>
           <Link className="mr-5" to="/profile">
-            <NavigationMenuLink>Profile</NavigationMenuLink>
+            Profile
           </Link>
         </NavigationMenuList>
       </NavigationMenu>

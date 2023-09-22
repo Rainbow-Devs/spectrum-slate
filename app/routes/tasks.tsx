@@ -11,10 +11,7 @@ export const loader = async ({ request }) => {
 };
 
 export default function Tasks() {
-  const user = useLoaderData().user;
   const tasks = useLoaderData().tasks;
-  console.log(tasks, "tasks");
-  console.log(user, "user");
 
   return (
     <Layout>

@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client";
+import { Priority, PrismaClient, Status } from "@prisma/client";
 import bcrypt from "bcryptjs";
 
 const prisma = new PrismaClient();
@@ -40,6 +40,25 @@ async function seed() {
     },
   });
 
+  await prisma.task.create({
+    data: {
+      title: "My first task",
+      description: "Hello, world!",
+      priority: Priority.HIGH,
+      status: Status.OPEN,
+      assigneeId: user.id,
+    },
+  });
+
+  await prisma.task.create({
+    data: {
+      title: "My second task",
+      description: "Goodbye World!",
+      priority: Priority.LOW,
+      status: Status.DONE,
+      assigneeId: user.id,
+    },
+  });
   console.log(`Database has been seeded. 🌱`);
 }
 

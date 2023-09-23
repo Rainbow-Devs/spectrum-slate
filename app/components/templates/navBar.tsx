@@ -7,7 +7,7 @@ import { Form, Link } from "@remix-run/react";
 export const NavBar = () => {
   return (
     <>
-      <header className="flex items-center justify-between bg-slate-800 p-4 text-white">
+      <div className="flex items-center justify-between bg-slate-800 p-4 text-white h-[8%]">
         <NavigationMenu>
           <NavigationMenuList>
             <Link to="/notes" className="px-4">
@@ -29,7 +29,7 @@ export const NavBar = () => {
             Logout
           </button>
         </Form>
-      </header>
+      </div>
     </>
   );
 };

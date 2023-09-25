@@ -9,9 +9,9 @@ interface TaskProps {
 
 export default function TaskDisplay({ task }: TaskProps) {
   const formatDate = (date: Date) => {
-    // if (date === null) {
-    //   return "";
-    // }
+    if (date === null) {
+      return "";
+    }
     return new Date(date).toLocaleDateString("en-US", {
       month: "short",
       day: "numeric",

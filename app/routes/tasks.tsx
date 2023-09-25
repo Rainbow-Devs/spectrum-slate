@@ -16,7 +16,14 @@ export default function Tasks() {
   return (
     <Layout>
       <div id="container" className="flex h-[92%]">
-        <div className="w-1/5 border border-blue-500 h-full"></div>
+        <div className="w-1/5 border border-blue-500 h-full prose prose-sm flex flex-col p-10">
+          {/* TODO unhard code these values */}
+          <h2>Quick Filters</h2>
+          <h2>All Tasks (6)</h2>
+          <h2>Due Today (5)</h2>
+          <h2>Due This Week (4)</h2>
+          <h2>Overdue (6)</h2>
+        </div>
         <div className="w-4/5 border border-red-500 h-full p-3">
           <div className="flex justify-center">
             <h1 className="text-3xl">Tasks</h1>

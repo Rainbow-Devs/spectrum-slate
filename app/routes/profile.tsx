@@ -1,14 +1,19 @@
 // profile form component where users can edit their information
 
 import React, { useEffect, useState } from "react";
-import { Form, isRouteErrorResponse, useActionData, useRouteError } from "@remix-run/react";
+import {
+  Form,
+  isRouteErrorResponse,
+  useActionData,
+  useRouteError,
+} from "@remix-run/react";
 import { Input } from "~/components/atoms/input";
 import { Label } from "~/components/atoms/label";
 import { Button } from "~/components/atoms/button";
 import { useUser } from "~/utils";
 import { updateUserById } from "~/models/user.server";
 import { requireUserId } from "~/session.server";
-import { NavBar } from "~/components/templates/nav-bar";
+import { NavBar } from "~/components/templates/navBar";
 import { Toaster } from "~/components/ui/toaster";
 import { toast } from "~/components/ui/use-toast";
 import { json } from "@remix-run/node";
@@ -17,7 +22,7 @@ export const loader = async ({ request }) => {
   const id = await requireUserId(request);
   const user = json({ id });
   return user;
-}
+};
 
 export const action = async ({ request }) => {
   const id = await requireUserId(request);
@@ -149,7 +154,6 @@ export default function ProfileForm() {
     </>
   );
 }
-
 
 export function ErrorBoundary() {
   const error = useRouteError();

@@ -3,6 +3,7 @@ import TaskDisplay from "~/components/molecules/TaskDisplay";
 import { getAllTasks } from "~/models/task.server";
 import { requireUserId } from "~/session.server";
 import Layout from "~/components/templates/Layout";
+import styled from "@emotion/styled";
 
 export const loader = async ({ request }) => {
   const id = await requireUserId(request);
@@ -16,14 +17,14 @@ export default function Tasks() {
   return (
     <Layout>
       <div id="container" className="flex h-[92%] flex-col md:flex-row">
-        <div className="w-4/4 md:w-1/5 border border-slate-800 md:h-full prose prose-sm flex flex-col items-center md:items-start p-3 md:p-5">
+        <TaskFilterDiv className="">
           {/* TODO unhard code these values */}
           <h2>Quick Filters</h2>
           <h2>All Tasks (6)</h2>
           <h2>Due Today (5)</h2>
           <h2>Due This Week (4)</h2>
           <h2>Overdue (6)</h2>
-        </div>
+        </TaskFilterDiv>
         <div className="w-5/5 md:w-4/5 border h-full p-3">
           <div className="flex justify-center">
             <h1 className="text-3xl">Tasks</h1>
@@ -38,3 +39,27 @@ export default function Tasks() {
     </Layout>
   );
 }
+
+const TaskFilterDiv = styled.div`
+  width: 100%;
+  border: 1px solid slategray;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem;
+
+  h2{
+    margin: 0.5rem;
+    cursor: pointer;
+    font-size: 1rem;
+  }
+  
+  @media (min-width: 768px) {
+    width: 20%;
+    height: 100%;
+    align-items: flex-start;
+    padding: 1.25rem;
+  }
+  
+  /* Add any additional styles for prose and prose-sm here */
+`;

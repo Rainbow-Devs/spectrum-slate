@@ -15,8 +15,8 @@ export default function Tasks() {
 
   return (
     <Layout>
-      <div id="container" className="flex h-[92%]">
-        <div className="w-1/5 border border-blue-500 h-full prose prose-sm flex flex-col p-10">
+      <div id="container" className="flex h-[92%] flex-col md:flex-row">
+        <div className="w-4/4 md:w-1/5 border border-slate-800 md:h-full prose prose-sm flex flex-col items-center md:items-start p-3 md:p-5">
           {/* TODO unhard code these values */}
           <h2>Quick Filters</h2>
           <h2>All Tasks (6)</h2>
@@ -24,11 +24,11 @@ export default function Tasks() {
           <h2>Due This Week (4)</h2>
           <h2>Overdue (6)</h2>
         </div>
-        <div className="w-4/5 border border-red-500 h-full p-3">
+        <div className="w-5/5 md:w-4/5 border h-full p-3">
           <div className="flex justify-center">
             <h1 className="text-3xl">Tasks</h1>
           </div>
-          <div>
+          <div className="flex flex-wrap justify-center md:justify-normal">
             {tasks.map((task) => (
               <TaskDisplay key={task.id} task={task} />
             ))}

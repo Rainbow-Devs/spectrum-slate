@@ -41,6 +41,7 @@ export function createTask({
       dueDate,
       priority,
       status,
+      assigneeId
     },
   });
 }

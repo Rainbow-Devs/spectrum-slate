@@ -10,11 +10,11 @@ export const NavBar = () => {
       <div className="flex items-center justify-between bg-slate-800 p-4 text-white h-[8%]">
         <NavigationMenu>
           <NavigationMenuList>
-            <Link to="/notes" className="px-4">
-              Notes
-            </Link>
             <Link className="px-4" to="/profile">
               Profile
+            </Link>
+            <Link to="/notes" className="px-4">
+              Notes
             </Link>
             <Link to="/tasks" className="px-4">
               Tasks

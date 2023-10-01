@@ -23,6 +23,14 @@ export const action = async ({ request }: ActionArgs) => {
   const dueDate = formData.get("dueDate");
   const priority = formData.get("priority");
 
+  // if date is before current date return error
+  const currentDate = new Date();
+  const dueDateObj = new Date(dueDate.toString());
+  if (dueDateObj < currentDate) {
+    return {
+      error: "Due date must be after current date",
+    };
+  }
   if (taskName && description && dueDate && priority) {
     try {
       await createTask({

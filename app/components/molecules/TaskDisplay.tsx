@@ -10,9 +10,10 @@ import {
 } from "../atoms/context-menu";
 interface TaskProps {
   task: Task;
+  handleEditTask: (task: Task) => void;
 }
 
-export default function TaskDisplay({ task }: TaskProps) {
+export default function TaskDisplay({ task, handleEditTask}: TaskProps) {
   const formatDate = (date: Date) => {
     if (date === null) {
       return "";
@@ -47,7 +48,7 @@ export default function TaskDisplay({ task }: TaskProps) {
         </Card>
       </ContextMenuTrigger>
       <ContextMenuContent className="bg-slate-500 text-white">
-        <ContextMenuItem>Edit</ContextMenuItem>
+        <ContextMenuItem onSelect={(e) => handleEditTask(task)}>Edit</ContextMenuItem>
         <ContextMenuItem>Delete</ContextMenuItem>
       </ContextMenuContent>
     </ContextMenu>

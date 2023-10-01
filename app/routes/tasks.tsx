@@ -8,6 +8,8 @@ import NewTask from "~/components/organisms/NewTask";
 import type { Priority } from "@prisma/client";
 import { Status } from "@prisma/client";
 import type { ActionArgs } from "@remix-run/node";
+import EditTask from "~/components/organisms/EditTask";
+import { useState } from "react";
 
 export const loader = async ({ request }) => {
   const id = await requireUserId(request);
@@ -57,6 +59,13 @@ export const action = async ({ request }: ActionArgs) => {
 
 export default function Tasks() {
   const tasks = useLoaderData().tasks;
+  const [editTaskOpen, setEditTaskOpen] = useState(false);
+  const [selectedTask, setSelectedTask] = useState(null);
+
+  const editTaskHandler = (task) => {
+    setSelectedTask(task);
+    setEditTaskOpen(true);
+  }
 
   return (
     <Layout>
@@ -64,6 +73,7 @@ export default function Tasks() {
         <TaskFilterDiv className="">
           {/* TODO unhard code these values */}
           <NewTask />
+          <EditTask open={editTaskOpen} setOpen={setEditTaskOpen} selectedTask={selectedTask} />
           <h2>Quick Filters</h2>
           <h2>All Tasks (6)</h2>
           <h2>Due Today (5)</h2>
@@ -76,7 +86,7 @@ export default function Tasks() {
           </div>
           <div className="flex flex-wrap justify-center md:justify-normal">
             {tasks.map((task) => (
-              <TaskDisplay key={task.id} task={task} />
+              <TaskDisplay key={task.id} task={task} handleEditTask={editTaskHandler} />
             ))}
           </div>
         </div>

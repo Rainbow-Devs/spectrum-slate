@@ -1,7 +1,7 @@
 import React from "react";
 import type { Task } from "@prisma/client";
 import { Card } from "../ui/card";
-import { StatusDot } from "../atoms/StatusDot";
+import { PriorityDot } from "../atoms/PriorityDot";
 import {
   ContextMenu,
   ContextMenuContent,
@@ -24,17 +24,22 @@ export default function TaskDisplay({ task }: TaskProps) {
     });
   };
   const dueDate = formatDate(task?.dueDate);
+
+  function removeUnderScore(str: string) {
+    if (!str.length) return "";
+    return str.replace(/_/g, " ");
+  }
   return (
     <ContextMenu>
       <ContextMenuTrigger className="flex flex-wrap items-center w-[30%]">
         <Card className="w-[100%] m-2 p-2 flex items-center">
-          <StatusDot status={task.status} />
+          <PriorityDot priority={task.priority} />
           <div className="ml-3 text-m w-[100%]">
             <h2 className="text-m">
-              <span className="font-bold">Title:</span>
+              <span className="font-bold mr-1">Title:</span>
               {task.title}
             </h2>
-            <p className="text-sm">Status: {task.status}</p>
+            <p className="text-sm">Status: {removeUnderScore(task.status)}</p>
             {dueDate && (
               <p className="text-sm text-slate-500">Due: {dueDate}</p>
             )}

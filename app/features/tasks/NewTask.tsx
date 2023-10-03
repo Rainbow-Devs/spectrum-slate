@@ -18,47 +18,23 @@ import {
   SelectValue,
 } from "../../components/ui/select";
 import { Textarea } from "../../components/ui/textarea";
-import { useActionData, useSubmit } from "@remix-run/react";
+import { useNewTask } from "./hooks/useNewTask";
 
 export default function NewTask() {
-  const [title, setTitle] = useState(""); // TODO: [title, setTitle
-  const [description, setDescription] = useState("");
-  const [dueDate, setDueDate] = useState("");
-  const [priority, setPriority] = useState("");
-  const [open, setOpen] = useState(false);
-  const [disableButton, setDisableButton] = useState(true); // TODO: [disableButton, setDisableButton
-  const submit = useSubmit();
-  const actionData = useActionData();
-  console.log(actionData);
-
-  useEffect(() => {
-    if (actionData?.success) {
-      setOpen(false);
-    }
-  }, [actionData]);
-
-  useEffect(() => {
-    if (title && description && dueDate && priority) {
-      setDisableButton(false);
-    } else {
-      setDisableButton(true);
-    }
-  }, [title, description, dueDate, priority]);
-
-  const handleSubmit = () => {
-    // check make sure values from state are not empty
-    if (!title || !description || !dueDate || !priority) {
-      return;
-    }
-    const formData = new FormData();
-    formData.append("title", title);
-    formData.append("description", description);
-    formData.append("dueDate", dueDate);
-    formData.append("priority", priority);
-    submit(formData, {
-      method: "post",
-    });
-  };
+ const {
+    title,
+    setTitle,
+    description,
+    setDescription,
+    dueDate,
+    setDueDate,
+    setPriority,
+    disableButton,
+    handleSubmit,
+    actionData,
+    open,
+    setOpen,
+ } = useNewTask();
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>

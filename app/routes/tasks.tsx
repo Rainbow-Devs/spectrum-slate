@@ -4,11 +4,11 @@ import { createTask, getAllTasks, editTask } from "~/models/task.server";
 import { requireUserId } from "~/session.server";
 import Layout from "~/components/templates/Layout";
 import styled from "@emotion/styled";
-import NewTask from "~/components/organisms/NewTask";
+import NewTask from "~/features/tasks/NewTask";
 import type { Priority } from "@prisma/client";
 import { Status } from "@prisma/client";
 import type { ActionArgs } from "@remix-run/node";
-import EditTask from "~/components/organisms/EditTask";
+import EditTask from "~/features/tasks/EditTask";
 import { useState } from "react";
 
 export const loader = async ({ request }) => {

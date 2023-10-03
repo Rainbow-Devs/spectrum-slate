@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { Button } from "../atoms/button";
-import { Input } from "../atoms/input";
-import { Label } from "../atoms/label";
+import { Button } from "../../components/atoms/button";
+import { Input } from "../../components/atoms/input";
+import { Label } from "../../components/atoms/label";
 import {
   Dialog,
   DialogContent,
@@ -9,15 +9,15 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "../ui/dialog";
+} from "../../components/ui/dialog";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "../ui/select";
-import { Textarea } from "../ui/textarea";
+} from "../../components/ui/select";
+import { Textarea } from "../../components/ui/textarea";
 import { useActionData, useSubmit } from "@remix-run/react";
 
 export default function NewTask() {

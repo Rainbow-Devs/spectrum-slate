@@ -14,6 +14,16 @@ import { useState } from "react";
 export const loader = async ({ request }) => {
   const id = await requireUserId(request);
   const tasks = await getAllTasks({ userId: id });
+  // sort tasks by due date
+  tasks.sort((a, b) => {
+    if (a.dueDate === null) {
+      return 1;
+    }
+    if (b.dueDate === null) {
+      return -1;
+    }
+    return new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime();
+  });
   return { userId: id, tasks };
 };
 

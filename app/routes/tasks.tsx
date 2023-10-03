@@ -30,7 +30,7 @@ export const loader = async ({ request }) => {
 export const action = async ({ request }: ActionArgs) => {
   const formData = await request.formData();
   const id = await requireUserId(request);
-  const taskName = formData.get("taskName");
+  const title = formData.get("title");
   const description = formData.get("description");
   const dueDate = formData.get("dueDate");
   const priority = formData.get("priority");
@@ -38,11 +38,11 @@ export const action = async ({ request }: ActionArgs) => {
 
   if (intent === "edit") {
     const taskId = formData.get("taskId");
-    if (taskId && taskName && description && dueDate && priority) {
+    if (taskId && title && description && dueDate && priority) {
       try {
         await editTask({
           id: Number(taskId),
-          title: taskName.toString(),
+          title: title.toString(),
           description: description.toString(),
           dueDate: new Date(dueDate.toString()),
           priority: priority.toString() as Priority,
@@ -69,11 +69,11 @@ export const action = async ({ request }: ActionArgs) => {
       error: "Due date must be after current date",
     };
   }
-  if (taskName && description && dueDate && priority) {
+  if (title && description && dueDate && priority) {
     try {
       await createTask({
         assigneeId: id.toString(),
-        title: taskName.toString(),
+        title: title.toString(),
         description: description.toString(),
         dueDate: new Date(dueDate.toString()),
         priority: priority.toString() as Priority,

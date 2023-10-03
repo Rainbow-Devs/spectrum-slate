@@ -32,7 +32,7 @@ export default function EditTask({
   setOpen,
   selectedTask,
 }: EditTaskProps) {
-  const [taskName, setTaskName] = useState(""); // TODO: [taskName, setTaskName
+  const [title, setTitle] = useState(""); // TODO: [title, setTitle
   const [description, setDescription] = useState("");
   const [dueDate, setDueDate] = useState("");
   const [priority, setPriority] = useState("");
@@ -49,7 +49,7 @@ export default function EditTask({
 
   useEffect(() => {
     if (selectedTask) {
-      setTaskName(selectedTask.title);
+      setTitle(selectedTask.title);
       setDescription(selectedTask.description);
       if (selectedTask.dueDate) {
         const date = new Date(selectedTask.dueDate);
@@ -62,21 +62,21 @@ export default function EditTask({
   }, [selectedTask]);
 
   useEffect(() => {
-    if (taskName && description && dueDate && priority) {
+    if (title && description && dueDate && priority) {
       setDisableButton(false);
     } else {
       setDisableButton(true);
     }
-  }, [taskName, description, dueDate, priority]);
+  }, [title, description, dueDate, priority]);
 
   const handleSubmit = () => {
     // check make sure values from state are not empty
-    if (!taskName || !description || !dueDate || !priority) {
+    if (!title || !description || !dueDate || !priority) {
       return;
     }
     const formData = new FormData();
     formData.append("taskId", selectedTask.id.toString());
-    formData.append("taskName", taskName);
+    formData.append("title", title);
     formData.append("description", description);
     formData.append("dueDate", dueDate);
     formData.append("priority", priority);
@@ -93,11 +93,11 @@ export default function EditTask({
         <DialogHeader>
           <DialogTitle>Edit Task</DialogTitle>
         </DialogHeader>
-        <Label htmlFor="taskName">Task Name</Label>
+        <Label htmlFor="title">Task Name</Label>
         <Input
-          value={taskName}
-          onChange={(e) => setTaskName(e.target.value)}
-          id="taskName"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          id="title"
         />
         <Label htmlFor="taskDescription">Task Description</Label>
         <Textarea

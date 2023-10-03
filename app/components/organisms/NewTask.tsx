@@ -21,7 +21,7 @@ import { Textarea } from "../ui/textarea";
 import { useActionData, useSubmit } from "@remix-run/react";
 
 export default function NewTask() {
-  const [taskName, setTaskName] = useState(""); // TODO: [taskName, setTaskName
+  const [title, setTitle] = useState(""); // TODO: [title, setTitle
   const [description, setDescription] = useState("");
   const [dueDate, setDueDate] = useState("");
   const [priority, setPriority] = useState("");
@@ -38,20 +38,20 @@ export default function NewTask() {
   }, [actionData]);
 
   useEffect(() => {
-    if (taskName && description && dueDate && priority) {
+    if (title && description && dueDate && priority) {
       setDisableButton(false);
     } else {
       setDisableButton(true);
     }
-  }, [taskName, description, dueDate, priority]);
+  }, [title, description, dueDate, priority]);
 
   const handleSubmit = () => {
     // check make sure values from state are not empty
-    if (!taskName || !description || !dueDate || !priority) {
+    if (!title || !description || !dueDate || !priority) {
       return;
     }
     const formData = new FormData();
-    formData.append("taskName", taskName);
+    formData.append("title", title);
     formData.append("description", description);
     formData.append("dueDate", dueDate);
     formData.append("priority", priority);
@@ -68,11 +68,11 @@ export default function NewTask() {
         <DialogHeader>
           <DialogTitle>Add New Task</DialogTitle>
         </DialogHeader>
-        <Label htmlFor="taskName">Task Name</Label>
+        <Label htmlFor="title">Task Name</Label>
         <Input
-          value={taskName}
-          onChange={(e) => setTaskName(e.target.value)}
-          id="taskName"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          id="title"
         />
         <Label htmlFor="taskDescription">Task Description</Label>
         <Textarea
@@ -111,7 +111,9 @@ export default function NewTask() {
           <p className="text-red-500">{actionData.error}</p>
         )}
         <DialogFooter>
-          <Button disabled={disableButton} onClick={handleSubmit}>Add Task</Button>
+          <Button disabled={disableButton} onClick={handleSubmit}>
+            Add Task
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

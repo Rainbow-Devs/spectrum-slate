@@ -1,6 +1,6 @@
 import { useLoaderData } from "@remix-run/react";
 import TaskDisplay from "~/components/molecules/TaskDisplay";
-import { createTask, getAllTasks } from "~/models/task.server";
+import { createTask, getAllTasks, editTask } from "~/models/task.server";
 import { requireUserId } from "~/session.server";
 import Layout from "~/components/templates/Layout";
 import styled from "@emotion/styled";
@@ -24,6 +24,32 @@ export const action = async ({ request }: ActionArgs) => {
   const description = formData.get("description");
   const dueDate = formData.get("dueDate");
   const priority = formData.get("priority");
+  const intent = formData.get("intent");
+
+  if (intent === "edit") {
+    const taskId = formData.get("taskId");
+    if (taskId && taskName && description && dueDate && priority) {
+      try {
+        await editTask({
+          id: Number(taskId),
+          title: taskName.toString(),
+          description: description.toString(),
+          dueDate: new Date(dueDate.toString()),
+          priority: priority.toString() as Priority,
+          status: Status.NOT_STARTED,
+        });
+        return { success: true };
+      } catch (e) {
+        return {
+          error: "Something went wrong",
+        };
+      }
+    } else {
+      return {
+        error: "Missing required fields",
+      };
+    }
+  }
 
   // if date is before current date return error
   const currentDate = new Date();
@@ -62,31 +88,40 @@ export default function Tasks() {
   const [editTaskOpen, setEditTaskOpen] = useState(false);
   const [selectedTask, setSelectedTask] = useState(null);
 
-  const editTaskHandler = (task) => {
-    setSelectedTask(task);
-    setEditTaskOpen(true);
-  }
+  const editTaskHandler = (e, task) => {
+    if (e.detail === 2) {
+      setSelectedTask(task);
+      setEditTaskOpen(true);
+    }
+  };
 
   return (
     <Layout>
       <div id="container" className="flex h-[92%] flex-col md:flex-row">
         <TaskFilterDiv className="">
-          {/* TODO unhard code these values */}
           <NewTask />
-          <EditTask open={editTaskOpen} setOpen={setEditTaskOpen} selectedTask={selectedTask} />
+          <EditTask
+            open={editTaskOpen}
+            setOpen={setEditTaskOpen}
+            selectedTask={selectedTask}
+          />
           <h2>Quick Filters</h2>
           <h2>All Tasks (6)</h2>
           <h2>Due Today (5)</h2>
           <h2>Due This Week (4)</h2>
           <h2>Overdue (6)</h2>
         </TaskFilterDiv>
-        <div className="w-5/5 md:w-4/5 border h-full p-3">
+        <div className="w-5/5 md:w-4/5 border h-full p-3 overflow-scroll">
           <div className="flex justify-center">
             <h1 className="text-3xl">Tasks</h1>
           </div>
           <div className="flex flex-wrap justify-center md:justify-normal">
             {tasks.map((task) => (
-              <TaskDisplay key={task.id} task={task} handleEditTask={editTaskHandler} />
+              <TaskDisplay
+                key={task.id}
+                task={task}
+                handleEditTask={editTaskHandler}
+              />
             ))}
           </div>
         </div>

@@ -19,7 +19,7 @@ import {
 } from "../ui/select";
 import { Textarea } from "../ui/textarea";
 import { useActionData, useSubmit } from "@remix-run/react";
-import { Task } from "@prisma/client";
+import type { Task } from "@prisma/client";
 
 interface EditTaskProps {
   open: boolean;
@@ -39,8 +39,6 @@ export default function EditTask({
   const [disableButton, setDisableButton] = useState(true); // TODO: [disableButton, setDisableButton
   const submit = useSubmit();
   const actionData = useActionData();
-  console.log(actionData);
-  console.log(selectedTask);
 
   useEffect(() => {
     if (actionData?.success) {
@@ -77,13 +75,14 @@ export default function EditTask({
       return;
     }
     const formData = new FormData();
+    formData.append("taskId", selectedTask.id.toString());
     formData.append("taskName", taskName);
     formData.append("description", description);
     formData.append("dueDate", dueDate);
     formData.append("priority", priority);
+    formData.append("intent", "edit");
     submit(formData, {
       method: "post",
-      action: "/tasks/edit",
     });
   };
 

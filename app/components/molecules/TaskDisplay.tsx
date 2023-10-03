@@ -2,15 +2,9 @@ import React from "react";
 import type { Task } from "@prisma/client";
 import { Card } from "../ui/card";
 import { PriorityDot } from "../atoms/PriorityDot";
-import {
-  ContextMenu,
-  ContextMenuContent,
-  ContextMenuItem,
-  ContextMenuTrigger,
-} from "../atoms/context-menu";
 interface TaskProps {
   task: Task;
-  handleEditTask: (task: Task) => void;
+  handleEditTask: (event: React.MouseEvent, task: Task) => void;
 }
 
 export default function TaskDisplay({ task, handleEditTask}: TaskProps) {
@@ -31,9 +25,7 @@ export default function TaskDisplay({ task, handleEditTask}: TaskProps) {
     return str.replace(/_/g, " ");
   }
   return (
-    <ContextMenu>
-      <ContextMenuTrigger className="flex flex-wrap items-center w-[30%]">
-        <Card className="w-[100%] m-2 p-2 flex items-center">
+        <Card onClick={(e) => handleEditTask(e, task)} className="w-[100%] m-2 p-2 flex items-center">
           <PriorityDot priority={task.priority} />
           <div className="ml-3 text-m w-[100%]">
             <h2 className="text-m">
@@ -46,11 +38,6 @@ export default function TaskDisplay({ task, handleEditTask}: TaskProps) {
             )}
           </div>
         </Card>
-      </ContextMenuTrigger>
-      <ContextMenuContent className="bg-slate-500 text-white">
-        <ContextMenuItem onSelect={(e) => handleEditTask(task)}>Edit</ContextMenuItem>
-        <ContextMenuItem>Delete</ContextMenuItem>
-      </ContextMenuContent>
-    </ContextMenu>
+     
   );
 }

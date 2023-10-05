@@ -1,7 +1,6 @@
-import { useEffect, useState } from "react";
-import { Button } from "../atoms/button";
-import { Input } from "../atoms/input";
-import { Label } from "../atoms/label";
+import { Button } from "../../components/atoms/button";
+import { Input } from "../../components/atoms/input";
+import { Label } from "../../components/atoms/label";
 import {
   Dialog,
   DialogContent,
@@ -9,56 +8,32 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "../ui/dialog";
+} from "../../components/ui/dialog";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "../ui/select";
-import { Textarea } from "../ui/textarea";
-import { useActionData, useSubmit } from "@remix-run/react";
+} from "../../components/ui/select";
+import { Textarea } from "../../components/ui/textarea";
+import { useNewTask } from "./hooks/useNewTask";
 
 export default function NewTask() {
-  const [taskName, setTaskName] = useState(""); // TODO: [taskName, setTaskName
-  const [description, setDescription] = useState("");
-  const [dueDate, setDueDate] = useState("");
-  const [priority, setPriority] = useState("");
-  const [open, setOpen] = useState(false);
-  const [disableButton, setDisableButton] = useState(true); // TODO: [disableButton, setDisableButton
-  const submit = useSubmit();
-  const actionData = useActionData();
-  console.log(actionData);
-
-  useEffect(() => {
-    if (actionData?.success) {
-      setOpen(false);
-    }
-  }, [actionData]);
-
-  useEffect(() => {
-    if (taskName && description && dueDate && priority) {
-      setDisableButton(false);
-    } else {
-      setDisableButton(true);
-    }
-  }, [taskName, description, dueDate, priority]);
-
-  const handleSubmit = () => {
-    // check make sure values from state are not empty
-    if (!taskName || !description || !dueDate || !priority) {
-      return;
-    }
-    const formData = new FormData();
-    formData.append("taskName", taskName);
-    formData.append("description", description);
-    formData.append("dueDate", dueDate);
-    formData.append("priority", priority);
-    submit(formData, {
-      method: "post",
-    });
-  };
+ const {
+    title,
+    setTitle,
+    description,
+    setDescription,
+    dueDate,
+    setDueDate,
+    setPriority,
+    disableButton,
+    handleSubmit,
+    actionData,
+    open,
+    setOpen,
+ } = useNewTask();
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
@@ -68,11 +43,11 @@ export default function NewTask() {
         <DialogHeader>
           <DialogTitle>Add New Task</DialogTitle>
         </DialogHeader>
-        <Label htmlFor="taskName">Task Name</Label>
+        <Label htmlFor="title">Task Name</Label>
         <Input
-          value={taskName}
-          onChange={(e) => setTaskName(e.target.value)}
-          id="taskName"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          id="title"
         />
         <Label htmlFor="taskDescription">Task Description</Label>
         <Textarea
@@ -111,7 +86,9 @@ export default function NewTask() {
           <p className="text-red-500">{actionData.error}</p>
         )}
         <DialogFooter>
-          <Button disabled={disableButton} onClick={handleSubmit}>Add Task</Button>
+          <Button disabled={disableButton} onClick={handleSubmit}>
+            Add Task
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

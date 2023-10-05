@@ -45,3 +45,32 @@ export function createTask({
     },
   });
 }
+
+// edit task 
+
+export function editTask({
+  id,
+  title,
+  description,
+  dueDate,
+  priority,
+  status,
+}: {
+  id: number;
+  title: string;
+  description: string;
+  dueDate: Date;
+  priority: Priority;
+  status: Status;
+}) {
+  return prisma.task.update({
+    where: { id },
+    data: {
+      title,
+      description,
+      dueDate,
+      priority,
+      status,
+    },
+  });
+}

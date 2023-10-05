@@ -13,23 +13,23 @@ const task = {
 
 describe("TaskDisplay", () => {
   it("renders the task title", () => {
-    render(<TaskDisplay task={task} />);
+    render(<TaskDisplay handleEditTask={jest.fn} task={task} />);
     expect(screen.getByText("Test Task")).toBeInTheDocument();
   });
 
   it("renders the task status", () => {
-    render(<TaskDisplay task={task} />);
+    render(<TaskDisplay handleEditTask={jest.fn} task={task} />);
     expect(screen.getByText("Status: In Progress")).toBeInTheDocument();
   });
 
   it("renders the task due date", () => {
-    render(<TaskDisplay task={task} />);
+    render(<TaskDisplay handleEditTask={jest.fn} task={task} />);
     expect(screen.getByText("Due: Jan 1, 2022")).toBeInTheDocument();
   });
 
   it("does not render the task due date if it is null", () => {
     const taskWithoutDueDate = { ...task, dueDate: null };
-    render(<TaskDisplay task={taskWithoutDueDate} />);
+    render(<TaskDisplay handleEditTask={jest.fn} task={taskWithoutDueDate} />);
     expect(screen.queryByText("Due:")).not.toBeInTheDocument();
   });
 });

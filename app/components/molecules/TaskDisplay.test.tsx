@@ -1,25 +1,32 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
 import TaskDisplay from "./TaskDisplay";
-import type { Task } from "@prisma/client";
+import { Priority, Status, type Task } from "@prisma/client";
 import "@testing-library/jest-dom";
 
-const task = {
+const task: Task = {
   id: 1,
   title: "Test Task",
-  status: "In Progress",
   dueDate: new Date("01-01-2022"),
-} as unknown as Task;
+  description: "Test task description",
+  assigneeId: "1",
+  priority: Priority.LOW,
+  createdAt: new Date("2023-12-21"),
+  updatedAt: new Date("2023-12-21"),
+  category: "Test",
+  label: [],
+  status: Status.IN_PROGRESS
+};
 
 describe("TaskDisplay", () => {
   it("renders the task title", () => {
     render(<TaskDisplay handleEditTask={jest.fn} task={task} />);
-    expect(screen.getByText("Test Task")).toBeInTheDocument();
+    expect(screen.getByText(task.title)).toBeInTheDocument();
   });
 
   it("renders the task status", () => {
     render(<TaskDisplay handleEditTask={jest.fn} task={task} />);
-    expect(screen.getByText("Status: In Progress")).toBeInTheDocument();
+    expect(screen.getByText("Status: IN PROGRESS")).toBeInTheDocument();
   });
 
   it("renders the task due date", () => {

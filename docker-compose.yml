@@ -1,8 +1,10 @@
 version: "3.7"
 services:
   postgres:
+    container_name: postgres
     image: postgres:latest
     restart: always
+    env_file: .env
     environment:
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}

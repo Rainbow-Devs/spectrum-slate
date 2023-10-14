@@ -110,18 +110,18 @@ export default function Index() {
             </Label>
             <Checkbox id="remember" name="remember" />
           </div>
-          <Button
-            className="mb-5 mt-5 bg-slate-600 text-white"
-            variant="outline"
-          >
+          <div className="flex space-x-4">
+          <Button className="mb-5 mt-5 bg-slate-600 text-white" variant="outline">
             Sign In
           </Button>
-        </Form>
-        <div>
-          <div>
-            <Link to="/signup">{"Don't have an account? Sign Up"}</Link>
+
+          <Link to="/signup">
+            <Button className="mb-5 mt-5 bg-slate-600 text-white" variant="outline">
+              Create Account
+            </Button>
+          </Link>
           </div>
-        </div>
+        </Form>
         <Copyright sx={{ mt: 5 }} />
       </div>
     </div>
